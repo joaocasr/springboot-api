@@ -1,24 +1,49 @@
 package com.example.restservice.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "students")
+@Table(name = "student")
 public class Student {
 
-    @Id 
-    @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Long id;
     
     @Column(name = "name")
     private String name;
     
     @Column(name = "number")
     private int number;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "students")
+    private List<Subject> mysubjects;
     
     public int getNumber(){
         return number;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Subject> getSubjects() {
+        return mysubjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.mysubjects = new ArrayList<>(subjects);
     }
 
     public String getName(){
@@ -32,9 +57,9 @@ public class Student {
         this.name=nome;
     }
 
+    @Override
     public String toString() {
-        return String.format(
-            "Student[id=%s, name='%s', number='%d']",
-            id, name, number);
-      }
+        return "Student [id=" + id + ", name=" + name + ", number=" + number + "]";
+    }
+
 }
